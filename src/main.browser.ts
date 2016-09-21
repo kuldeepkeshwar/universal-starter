@@ -14,7 +14,8 @@ import {DetailModule} from "./app/detail/index";
 import {PaymentModule} from "./app/payment/index";
 import {AuthModule} from "./app/Auth/index";
 import {AboutModule} from "./app/about/index";
-import {Cookie, CookieBrowser} from "./common/utils/cookie";
+import {Cookie} from "./common/utils/cookie";
+import {CookieBrowser} from "./common/utils/cookie-browser";
 
 @NgModule({
   bootstrap: [ App ],

@@ -39,7 +39,7 @@ function ngApp(req, res) {
     req,
     res,
     ngModule: MainModule,
-    preboot: false,
+    preboot: true,
     baseUrl: '/',
     requestUrl: req.originalUrl,
     originUrl: 'http://localhost:3000'
@@ -47,6 +47,13 @@ function ngApp(req, res) {
 }
 // Routes with html5pushstate
 // ensure routes match client-side-app
+app.get('/test', function(req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  var pojo = { status: 200, message: 'serving from server!!!' };
+  var json = JSON.stringify(pojo, null, 2);
+  setTimeout(()=>res.status(200).send(json),1000);
+
+});
 
 //app.use('/ping',ping);
 //app.use(ERROR_PAGE,errorPage);
@@ -60,6 +67,8 @@ app.use('/sign-up',ngApp);
 app.use('/forgot-password',ngApp);
 app.use('/favourite/*',ngApp);
 app.use('/', ngApp);
+
+
 
 app.get('*', function(req, res) {
   res.setHeader('Content-Type', 'application/json');

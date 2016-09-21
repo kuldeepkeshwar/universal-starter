@@ -13,7 +13,8 @@ import {DiscoveryModule} from "./app/discovery/index";
 import {ErrorModule} from "./app/error/index";
 import {AuthModule} from "./app/Auth/index";
 import {AboutModule} from "./app/about/index";
-import {Cookie, CookieNode} from "./common/utils/cookie";
+import {Cookie} from "./common/utils/cookie";
+import {CookieNode} from "./common/utils/cookie-node";
 
 @NgModule({
   bootstrap: [ App ],

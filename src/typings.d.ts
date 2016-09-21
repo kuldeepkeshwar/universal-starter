@@ -25,6 +25,7 @@ import * as _ from 'lodash'
 // Extra variables that live on Global that will be replaced by webpack DefinePlugin
 declare var ENV: string;
 declare var HMR: boolean;
+
 interface GlobalEnvironment {
   ENV;
   HMR;
@@ -54,3 +55,8 @@ interface WebpackRequire {
 interface NodeRequire extends WebpackRequire {}
 interface NodeModule extends WebpackModule {}
 interface Global extends GlobalEnvironment  {}
+// declare var Zone:Zone;
+// interface Zone{
+//   current:Zone
+//   get(key:string)
+// }

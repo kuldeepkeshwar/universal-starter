@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import {Cookie} from "../common/utils/cookie";
+import {Http} from "@angular/http";
+//import {Cookie} from "../common/utils/cookie";
 
 @Component({
   selector: 'app',
@@ -16,14 +17,24 @@ import {Cookie} from "../common/utils/cookie";
   <p><a routerLink="/user/news-letter" routerLinkActive="active" >news-letter</a></p>
   
   <p><a routerLink="/user/profile" routerLinkActive="active" >profile</a></p>
+  
+  <p>{{data|json}}</p>
   <p><router-outlet></router-outlet></p>
   
   `
 })
 export class App {
-constructor(private _cookie:Cookie){
-  console.log(_cookie.getAll());
-}
+  private data;
+ constructor(private _http:Http/*private _cookie:Cookie*/){
+   //console.log(_cookie.getAll());
+
+
+ }
+  private test(){
+    this._http.get('/test').subscribe((data)=>{
+      this.data=data ;
+    });
+  }
 }
 
 
