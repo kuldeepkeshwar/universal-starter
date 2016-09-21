@@ -5,19 +5,24 @@ import {CookieOptionsArgs} from "./cookie-options-args.model";
  */
 
 export class CookieNode implements Cookie{
+  private _cache={};
   constructor(){
-    console.log('CookieNode');
-
-  }
-
-  get(key:string):string{
-    return "";
-  }
-
-  put(key: string, value: string, options?: CookieOptionsArgs) {
-
+    this._cache=Zone.current.get('req').cookie;
   }
   getAll(): Object{
-    return {};//Zone.current.get('req').cookies;
+    return Zone.current.get('req').cookies;
+  }
+  get(key: string): string {
+    if(this._cache[key]){
+      return this._cache[key];
+    }
+    return Zone.current.get('req').cookies[key];
+  }
+  put(key: string, value: string, options?: CookieOptionsArgs) {
+    this._cache[key]=value;
+    Zone.current.get('res').cookie(key,value,options);
+  }
+  remove(key: string, options?: CookieOptionsArgs): void {
+    Zone.current.get('res').cookie(key,undefined);
   }
 }

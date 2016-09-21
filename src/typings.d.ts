@@ -55,8 +55,8 @@ interface WebpackRequire {
 interface NodeRequire extends WebpackRequire {}
 interface NodeModule extends WebpackModule {}
 interface Global extends GlobalEnvironment  {}
-// declare var Zone:Zone;
-// interface Zone{
-//   current:Zone
-//   get(key:string)
-// }
+ declare var Zone:Zone;
+ interface Zone{
+   current:Zone
+   get(key:string)
+ }

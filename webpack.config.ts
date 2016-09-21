@@ -1,6 +1,13 @@
 var webpack = require('webpack');
 var path = require('path');
 var resolveNgRoute = require('@angularclass/resolve-angular-routes');
+var autoprefixer = require('autoprefixer');
+
+const DedupePlugin = require('webpack/lib/optimize/DedupePlugin');
+const UglifyJsPlugin = require('webpack/lib/optimize/UglifyJsPlugin');
+const CompressionPlugin = require('compression-webpack-plugin');
+const WebpackMd5Hash = require('webpack-md5-hash');
+const HtmlWebpackPlugin=require('html-webpack-plugin');
 
 
 var commonConfig = {
@@ -11,10 +18,30 @@ var commonConfig = {
     loaders: [
       // TypeScript
       { test: /\.ts$/, loaders: ['ts-loader', 'angular2-template-loader'] },
-      { test: /\.html$/, loader: 'raw-loader' },
-      { test: /\.css$/, loader: 'raw-loader' },
-      { test: /\.json$/, loader: 'json-loader' }
+      { test: /\.json$/, loader: 'json-loader' },
+      { test: /\.css$/, loaders: ['style','css'] },
+      {
+        test: /\.html/,
+        loader: 'html',
+        query: {
+          minimize: true,
+          removeAttributeQuotes: false,
+          caseSensitive: true,
+          // Teach html-minifier about Angular 2 syntax
+          customAttrSurround: [
+            [/#/, /(?:)/],
+            [/\*/, /(?:)/],
+            [/\[?\(?/, /(?:)/]
+          ],
+          customAttrAssign: [/\)?\]?=/]
+        }
+      },
+      { test: /\.scss$/, loaders: ['to-string', 'css', 'postcss', 'resolve-url'/*, 'sass?sourceMap'*/] }
     ],
+  },
+
+  postcss: function () {
+    return [autoprefixer];
   },
   plugins: [
     new webpack.ContextReplacementPlugin(
@@ -22,7 +49,12 @@ var commonConfig = {
       /angular(\\|\/)core(\\|\/)src(\\|\/)linker/,
       root('./src'),
       resolveNgRoute(root('./src'))
-    )
+    ),
+    new webpack.ProvidePlugin({
+      jQuery: 'jquery',
+      $: 'jquery',
+      jquery: 'jquery'
+    })
   ]
 
 };
@@ -32,12 +64,6 @@ var clientConfig = {
   target: 'web',
   entry: {
     main:['./src/client'],
-
-    //home:['./src/app/home/index'],
-
-    //local:['./src/app/home/local/index'],
-
-    //travel:['./src/app/home/travel/home.module'],
     vendor:[//'jquery','tipso','jquery-ui','ua-parser-js',
       //'rxjs','zone.js',//'reflect-metadata',
       'angular2-universal-polyfills','angular2-universal',
@@ -50,8 +76,25 @@ var clientConfig = {
     filename: "[name].js"
   },
   plugins:[
-    new webpack.optimize.CommonsChunkPlugin("vendor")
-
+    new webpack.optimize.CommonsChunkPlugin("vendor"),
+    new webpack.optimize.OccurrenceOrderPlugin(true),
+    new WebpackMd5Hash(),
+    //new DedupePlugin(),
+    // new UglifyJsPlugin({
+    //   beautify: false,
+    //   mangle: {
+    //     screw_ie8 : true,
+    //     keep_fnames: true
+    //   },
+    //   compress: {
+    //     screw_ie8: true
+    //   },
+    //   comments: false
+    // }),
+    new CompressionPlugin({
+      regExp: /\.css$|\.html$|\.js$|\.map$/,
+      threshold:  1024
+    }),
   ],
   node: {
     global: true,
@@ -72,30 +115,30 @@ var serverConfig = {
   },
   module: {
     preLoaders: [
-      { test: /angular2-material/, loader: "imports-loader?window=>global" }
+      //{ test: /angular2-material/, loader: "imports-loader?window=>global" }
     ],
   },
   externals: includeClientPackages([
-    // include these client packages so we can transform their source with webpack loaders
-    '@angular2-material/button',
-    '@angular2-material/button',
-    '@angular2-material/card',
-    '@angular2-material/checkbox',
-    '@angular2-material/core',
-    '@angular2-material/grid',
-    '@angular2-material/icon',
-    '@angular2-material/input',
-    '@angular2-material/list',
-    '@angular2-material/menu',
-    '@angular2-material/progress',
-    '@angular2-material/progress',
-    '@angular2-material/radio',
-    '@angular2-material/sidenav',
-    '@angular2-material/slider',
-    '@angular2-material/slide',
-    '@angular2-material/tabs',
-    '@angular2-material/toolbar',
-    '@angular2-material/tooltip'
+    // // include these client packages so we can transform their source with webpack loaders
+    // '@angular2-material/button',
+    // '@angular2-material/button',
+    // '@angular2-material/card',
+    // '@angular2-material/checkbox',
+    // '@angular2-material/core',
+    // '@angular2-material/grid',
+    // '@angular2-material/icon',
+    // '@angular2-material/input',
+    // '@angular2-material/list',
+    // '@angular2-material/menu',
+    // '@angular2-material/progress',
+    // '@angular2-material/progress',
+    // '@angular2-material/radio',
+    // '@angular2-material/sidenav',
+    // '@angular2-material/slider',
+    // '@angular2-material/slide',
+    // '@angular2-material/tabs',
+    // '@angular2-material/toolbar',
+    // '@angular2-material/tooltip'
   ]),
   node: {
     global: true,
