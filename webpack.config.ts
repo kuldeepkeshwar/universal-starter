@@ -30,10 +30,29 @@ var commonConfig = {
 
 var clientConfig = {
   target: 'web',
-  entry: './src/client',
-  output: {
-    path: root('dist/client')
+  entry: {
+    main:['./src/client'],
+
+    //home:['./src/app/home/index'],
+
+    //local:['./src/app/home/local/index'],
+
+    //travel:['./src/app/home/travel/home.module'],
+    vendor:[//'jquery','tipso','jquery-ui','ua-parser-js',
+      //'rxjs','zone.js',//'reflect-metadata',
+      'angular2-universal-polyfills','angular2-universal',
+      '@angular/core','@angular/compiler','@angular/common','@angular/forms','@angular/http',
+      '@angular/platform-browser','@angular/router'
+    ]
   },
+  output: {
+    path: root('dist/client'),
+    filename: "[name].js"
+  },
+  plugins:[
+    new webpack.optimize.CommonsChunkPlugin("vendor")
+
+  ],
   node: {
     global: true,
     __dirname: true,

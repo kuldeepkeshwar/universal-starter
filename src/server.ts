@@ -33,9 +33,6 @@ app.use('/assets', express.static(path.join(__dirname, 'assets'), {maxAge: 30}))
 app.use(express.static(path.join(ROOT, 'dist/client'), {index: false}));
 
 
-import { serverApi } from './backend/api';
-// Our API for demos only
-app.get('/data.json', serverApi);
 
 function ngApp(req, res) {
   res.render('index', {
@@ -50,12 +47,19 @@ function ngApp(req, res) {
 }
 // Routes with html5pushstate
 // ensure routes match client-side-app
-app.get('/', ngApp);
-app.get('/about', ngApp);
-app.get('/about/*', ngApp);
-app.get('/home', ngApp);
-app.get('/home/*', ngApp);
 
+//app.use('/ping',ping);
+//app.use(ERROR_PAGE,errorPage);
+app.use('/offers/*', ngApp);
+app.use('/offer/*', ngApp);
+app.use('/travel/*', ngApp);
+app.use('/user/*',ngApp);
+app.use('/payments/*', ngApp);
+app.use('/login',ngApp);
+app.use('/sign-up',ngApp);
+app.use('/forgot-password',ngApp);
+app.use('/favourite/*',ngApp);
+app.use('/', ngApp);
 
 app.get('*', function(req, res) {
   res.setHeader('Content-Type', 'application/json');

@@ -1,19 +1,32 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 import { UniversalModule } from 'angular2-universal';
 
-import { App, Home } from './app/app';
+import { App } from './app/app';
+import {BrowserModule} from "@angular/platform-browser";
+import {HttpModule} from "@angular/http";
+import {AppRouteModule} from "./app/app.routes";
+import {HomeModule} from "./app/home/index";
+import {UserModule} from "./app/user/index";
+import {ErrorModule} from "./app/error/index";
+import {DiscoveryModule} from "./app/discovery/index";
+import {DetailModule} from "./app/detail/index";
+import {PaymentModule} from "./app/payment/index";
+import {AuthModule} from "./app/Auth/index";
+import {AboutModule} from "./app/about/index";
+import {Cookie, CookieBrowser} from "./common/utils/cookie";
 
 @NgModule({
   bootstrap: [ App ],
-  declarations: [ App, Home ],
+  declarations: [ App ],
   imports: [
-    UniversalModule, // BrowserModule, HttpModule, and JsonpModule are included
-    FormsModule,
-    RouterModule.forRoot([
-      { path: '', component: Home, pathMatch: 'full' }
-    ])
+    UniversalModule,  BrowserModule, HttpModule,// and JsonpModule are included
+    FormsModule,AppRouteModule,
+    HomeModule,UserModule,PaymentModule,DetailModule,DiscoveryModule,ErrorModule,AuthModule,
+    AboutModule
+  ],
+  providers:[
+    {provide:Cookie, useClass:CookieBrowser},
   ]
 })
 export class MainModule {
