@@ -60,3 +60,12 @@ interface Global extends GlobalEnvironment  {}
    current:Zone
    get(key:string)
  }
+interface Promise<T> {
+  then<U>(
+    onFulfilled?: (value: T) => U | Promise<U>,
+    onRejected?: (error: any) => U | Promise<U>): Promise<U>;
+  then<U>(
+    onFulfilled?: (value: T) => U | Promise<U>,
+    onRejected?: (error: any) => void): Promise<U>;
+  catch<U>(onRejected?: (error: any) => U | Promise<U>): Promise<U>;
+}

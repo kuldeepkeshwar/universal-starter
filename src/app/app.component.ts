@@ -10,16 +10,12 @@ import {Cookie} from "../common/utils/cookie";
 })
 export class App {
   private data;
- constructor(private _http:Http,private _cookie:Cookie){
+ constructor(private _cookie:Cookie){
    console.log(_cookie.getAll());
 
 
  }
-  private test(){
-    this._http.get('/test').subscribe((data)=>{
-      this.data=data ;
-    });
-  }
+
 }
 
 

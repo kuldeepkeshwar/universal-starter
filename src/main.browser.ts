@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { UniversalModule } from 'angular2-universal';
 
-import { App } from './app/app';
+import { App } from './app/app.component';
 import {BrowserModule} from "@angular/platform-browser";
 import {HttpModule} from "@angular/http";
 import {AppRouteModule} from "./app/app.routes";

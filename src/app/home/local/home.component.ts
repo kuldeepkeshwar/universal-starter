@@ -1,4 +1,5 @@
-import {Component} from "@angular/core";
+import {Component,  OnInit} from "@angular/core";
+import {Router, ActivatedRoute} from "@angular/router";
 /**
  * Created by kuldeepkeshwar on 18/09/16.
  */
@@ -7,6 +8,11 @@ import {Component} from "@angular/core";
   template: require('./home.component.html'),
   styles:[require('./home.component.scss')]
 })
-export class Home {
-constructor(){}
+export class Home implements OnInit{
+constructor(private route: ActivatedRoute){}
+  ngOnInit() {
+    this.route.data.forEach((data)=>{
+      console.log(data);
+    });
+  }
 }
