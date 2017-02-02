@@ -6,6 +6,7 @@ const V8LazyParseWebpackPlugin = require('v8-lazy-parse-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 import webpackConfig, { root,  includeClientPackages } from './webpack.config';
 // const CompressionPlugin = require('compression-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 
 export const commonPlugins = [
@@ -55,6 +56,9 @@ export const commonConfig = {
 
 // Client.
 export const clientPlugins = [
+  new HtmlWebpackPlugin({
+    filename: '../server/index.html'
+  }),
   new BundleAnalyzerPlugin({
     analyzerMode: 'disabled', // change it to `server` to view bundle stats
     reportFilename: 'report.html',
